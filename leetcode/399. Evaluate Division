@@ -1,0 +1,109 @@
+// ARRAY , STRING, DFS, BFS, UNION FIND, GRAPH, SHORTEST PATH
+//Done by union find.
+
+
+class Solution {
+    map<string,string> mp;
+    map<string,double> mpv;
+    
+public:
+
+        string find(string v,string end,double& ans){
+            
+            if(v==mp[v]) return v;
+            string s=mp[v]+" "+v;
+            ans*=mpv[s];
+            string t=mp[v]+" "+end;
+            mpv[t]=ans;
+        
+            t=end+" "+mp[v];
+             mpv[t]=(1/ans);
+            return find(mp[v],end,ans);
+        }
+        
+
+
+    vector<double> calcEquation(vector<vector<string>>& e, vector<double>& v, vector<vector<string>>& q) {
+        vector<double> ans;
+        
+
+        for(int i=0;i<e.size();i++){
+            if(mp[e[i][0]]=="") mp[e[i][0]]=e[i][0];
+            
+
+
+
+            string s=e[i][0]+" "+e[i][1];
+            mpv[s]=v[i];
+            s=e[i][1]+" "+e[i][0];
+            mpv[s]=(1/v[i]);
+            s=e[i][0]+" "+e[i][0];
+            mpv[s]=1;
+            s=e[i][1]+" "+e[i][1];
+            mpv[s]=1;
+                if(mp[e[i][1]]==""){
+                    mp[e[i][1]]=e[i][0];
+                    
+                }else if(mp[e[i][0]]==""){
+                mp[e[i][0]]=e[i][1];
+                
+                }
+                else{
+                    double ans=1;
+                    string a= find(e[i][0],e[i][0],ans);
+                    ans=1;
+                    string b= find(e[i][1],e[i][1],ans);
+                    mp[b]=a;
+                    string k=b+" "+e[i][1];
+                    string l=a+" "+e[i][0];
+                    mpv[(a+" "+b)]=(mpv[l]/mpv[k])*mpv[e[i][0]+" "+e[i][1]];
+                    mpv[(b+" "+a)]=1/mpv[(a+" "+b)];
+                    
+                    
+                }
+                 
+            
+        }
+
+      
+  
+        
+
+
+        for(auto qu : q){
+            if(mp[qu[0]]==""|| mp[qu[1]]==""){ ans.push_back(-1);
+            continue;}
+            double tans=1;
+            string s=qu[0]+" "+qu[1];
+            if(mpv[s]){
+                ans.push_back(mpv[s]);
+continue;}
+
+
+
+        string a=find(qu[0],qu[0],tans);
+        tans=1;
+        string b=find(qu[1],qu[1],tans);
+        
+       
+       
+       
+         if(a==b){
+            if(mpv[s])
+           ans.push_back(mpv[s]);
+            else{
+            string k=b+" "+qu[1];
+            string l=qu[0]+" "+a;
+            ans.push_back(mpv[k]*mpv[l]);
+            }
+            }
+        else ans.push_back(-1);
+        }
+
+
+
+
+        return ans;
+    
+    }
+};
