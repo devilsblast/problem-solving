@@ -1,4 +1,5 @@
 // DFS , BFS, GRAPH , UNION FIND
+// Done by Union Find
 
 class Solution {
     vector<int> graph;
