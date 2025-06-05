@@ -1,0 +1,41 @@
+// DFS , BFS, GRAPH , UNION FIND
+
+class Solution {
+    vector<int> graph;
+public:
+
+    int find_papa(int v){
+        if(v==graph[v]) return v;
+        return graph[v]=find_papa(graph[v]);
+    }
+
+    void make_union(int a, int b){
+        a=find_papa(a);
+        b=find_papa(b);
+        if(a!=b) graph[b]=a;
+
+
+
+    }
+
+
+
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        int n=edges.size();
+        for(int i=0;i<=n;i++){
+            graph.push_back(i);
+        }
+            vector<int> ans;
+
+        for(auto e: edges){
+            if(find_papa(e[0])!=find_papa(e[1])){
+                make_union(e[0],e[1]);
+            }else{
+                ans.push_back(e[0]);
+                ans.push_back(e[1]);
+            }
+        }
+        return ans;
+
+    }
+};
